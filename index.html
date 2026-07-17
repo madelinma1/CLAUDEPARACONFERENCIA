@@ -133,6 +133,16 @@
   .outcome-card h4{font-size:16.5px;margin-bottom:8px}
   .outcome-card p{font-size:14.5px;color:var(--ink-soft);font-weight:400}
 
+  .speaker{background:var(--white)}
+  .speaker-grid{display:grid;grid-template-columns:.55fr 1fr;gap:56px;align-items:center;max-width:960px}
+  @media(max-width:760px){.speaker-grid{grid-template-columns:1fr;gap:32px}}
+  .speaker-photo-frame{aspect-ratio:4/5;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+  .speaker-photo-frame img{width:100%;height:100%;object-fit:cover;object-position:top center}
+  .speaker h2{font-size:32px;margin-bottom:14px}
+  .speaker-bio{color:var(--ink-soft);font-size:16.5px;font-weight:400;margin-bottom:16px}
+  .speaker-link{font-size:14.5px;font-weight:600}
+  .speaker-link a{color:var(--rose)}
+
   .testi{background:var(--plum);color:var(--cream)}
   .testi-note{text-align:center;font-size:13px;color:#d8c3cc;max-width:520px;margin:-20px auto 40px}
   .testi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
@@ -221,7 +231,7 @@
     </div>
     <div class="hero-visual">
       <img class="photo" src="madelin.jpg" alt="Madelin Santana" onerror="this.remove()">
-      <span class="caption">Un espacio sagrado donde las mujeres se encuentran, se abrazan, se sanan y florecen</span>
+      <span class="caption"><strong>Madelin Santana</strong> · Conferencista y autora de <em>El Proyecto Más Importante Eres Tú</em></span>
     </div>
   </div>
 </section>
@@ -306,6 +316,21 @@
       <div class="outcome-card"><div class="icon">✨</div><h4>Herramientas prácticas</h4><p>Maneras concretas de vivir en plenitud, no solo inspiración pasajera.</p></div>
       <div class="outcome-card"><div class="icon">🤝</div><h4>Comunidad de mujeres</h4><p>Un espacio sagrado donde te encuentras, te abrazas y floreces junto a otras.</p></div>
       <div class="outcome-card"><div class="icon">🔥</div><h4>Resiliencia activada</h4><p>Sales de este encuentro imparable, lista para tu siguiente paso.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SPEAKER -->
+<section class="speaker">
+  <div class="wrap speaker-grid">
+    <div class="speaker-photo-frame">
+      <img src="madelin.jpg" alt="Madelin Santana" onerror="this.parentNode.remove()">
+    </div>
+    <div>
+      <span class="eyebrow">Tu conferencista</span>
+      <h2>Madelin Santana</h2>
+      <p class="speaker-bio">Autora de <em>El Proyecto Más Importante Eres Tú</em> y creadora de este movimiento de sanidad para mujeres. Madelin guía cada encuentro con honestidad y ternura, uniendo sabiduría práctica y fe para acompañarte a reclamar tu voz, desatar tu poder y caminar hacia el destino que te espera.</p>
+      <p class="speaker-link">Conoce más en <a href="https://www.madelinsantana.com" target="_blank" rel="noopener">madelinsantana.com</a></p>
     </div>
   </div>
 </section>
@@ -441,7 +466,7 @@
 
 <footer>
   <div class="wrap">
-    <span>© 2026 PLENA · El Proyecto Más Importante Eres Tú. Todos los derechos reservados.</span>
+    <span>© 2026 Madelin Santana · PLENA · El Proyecto Más Importante Eres Tú. Todos los derechos reservados.</span>
     <span><a href="#">Política de privacidad</a> · <a href="#">Términos de servicio</a></span>
   </div>
 </footer>
