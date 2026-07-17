@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reserva tu lugar | PLENA</title>
+<meta name="description" content="Deja tus datos para reservar tu lugar en la Conferencia PLENA: La Mujer que Emergió, en Heritage Park, Lawrence MA.">
+<style>
+  :root{
+    --ink:#2b1e26;
+    --ink-soft:#5c4a54;
+    --cream:#faf6f2;
+    --cream-dark:#f1e6dd;
+    --plum:#4a2436;
+    --rose:#a5445c;
+    --line:#e8dcd2;
+    --white:#ffffff;
+    --radius:14px;
+    --shadow:0 20px 50px -25px rgba(43,30,38,0.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+  header{border-bottom:1px solid var(--line);background:var(--white)}
+  header .wrap{max-width:1120px;margin:0 auto;padding:18px 24px;display:flex;align-items:center;justify-content:space-between}
+  .logo{font-weight:800;font-size:18px;letter-spacing:.04em}
+  .logo span{color:var(--rose)}
+  .back{font-size:13.5px;font-weight:600;text-decoration:none;color:var(--ink-soft)}
+
+  main{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 20px}
+  .card{width:100%;max-width:460px;background:var(--white);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:40px 36px}
+
+  .steps{display:flex;align-items:center;gap:8px;margin-bottom:24px;font-size:12px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em}
+  .steps .step{display:flex;align-items:center;gap:8px}
+  .steps .dot{width:22px;height:22px;border-radius:50%;background:var(--rose);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px}
+  .steps .dot.pending{background:var(--cream-dark);color:var(--ink-soft)}
+  .steps .line{width:28px;height:1px;background:var(--line)}
+
+  h1{font-size:26px;margin-bottom:8px}
+  .card > p.lead{color:var(--ink-soft);font-size:15px;margin-bottom:28px}
+
+  label{display:block;font-size:13px;font-weight:700;margin-bottom:6px;margin-top:18px}
+  label:first-of-type{margin-top:0}
+  input{
+    width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:10px;
+    font-size:15px;font-family:inherit;color:var(--ink);background:var(--cream);
+  }
+  input:focus{outline:none;border-color:var(--rose);background:var(--white)}
+
+  .btn{
+    margin-top:26px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;
+    background:var(--rose);color:#fff;border:none;padding:16px;border-radius:100px;
+    font-weight:700;font-size:15.5px;cursor:pointer;
+    box-shadow:0 12px 26px -10px rgba(165,68,92,0.5);
+    transition:transform .18s ease;
+  }
+  .btn:hover{transform:translateY(-2px)}
+  .btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+
+  .fine-print{margin-top:16px;font-size:12px;color:var(--ink-soft);text-align:center}
+  .error{display:none;margin-top:14px;background:#fdeceb;border:1px solid #f2b8b3;color:#9b2c22;font-size:13px;padding:10px 12px;border-radius:8px}
+  .error.show{display:block}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">PLENA<span>.</span></div>
+    <a href="index.html" class="back">← Volver</a>
+  </div>
+</header>
+
+<main>
+  <div class="card">
+    <div class="steps">
+      <span class="step"><span class="dot">1</span> Tus datos</span>
+      <span class="line"></span>
+      <span class="step"><span class="dot pending">2</span> Pago</span>
+    </div>
+    <h1>Reserva tu lugar</h1>
+    <p class="lead">Déjanos tus datos para apartar tu cupo en la Conferencia PLENA, sábado 8 de agosto en Heritage Park, Lawrence MA. El siguiente paso es el pago seguro.</p>
+
+    <form id="signup-form">
+      <label for="name">Nombre completo</label>
+      <input type="text" id="name" name="name" placeholder="Tu nombre" required autocomplete="name">
+
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com" required autocomplete="email">
+
+      <div class="error" id="form-error">Por favor completa tu nombre y un correo válido.</div>
+
+      <button type="submit" class="btn" id="submit-btn">Continuar al pago →</button>
+      <p class="fine-print">Tu información solo se usa para confirmar tu lugar. Nunca compartimos tus datos.</p>
+    </form>
+  </div>
+</main>
+
+<script>
+  // NOTE: This form currently only carries the visitor's name/email forward to
+  // the payment page via sessionStorage + query params. It does NOT persist
+  // leads anywhere. To capture leads who fill this out but never pay, wire
+  // the fetch() call below to a form backend (e.g. Formspree, a Google Sheets
+  // webhook, your CRM's API) and replace FORM_ENDPOINT with your real URL.
+  var FORM_ENDPOINT = ""; // e.g. "https://formspree.io/f/your-form-id"
+
+  var form = document.getElementById('signup-form');
+  var errorBox = document.getElementById('form-error');
+  var submitBtn = document.getElementById('submit-btn');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = document.getElementById('name').value.trim();
+    var email = document.getElementById('email').value.trim();
+
+    if(!name || !email){
+      errorBox.classList.add('show');
+      return;
+    }
+    errorBox.classList.remove('show');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Redirigiendo…';
+
+    sessionStorage.setItem('plena_name', name);
+    sessionStorage.setItem('plena_email', email);
+
+    function goToPayment(){
+      var params = new URLSearchParams({ name: name, email: email });
+      window.location.href = 'payment.html?' + params.toString();
+    }
+
+    if (FORM_ENDPOINT) {
+      fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, email: email })
+      }).then(goToPayment).catch(goToPayment);
+    } else {
+      goToPayment();
+    }
+  });
+</script>
+
+</body>
+</html>

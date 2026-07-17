@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confirmar y pagar | PLENA</title>
+<meta name="description" content="Confirma tu reserva y completa el pago seguro para la Conferencia PLENA: La Mujer que Emergió, en Heritage Park, Lawrence MA.">
+<style>
+  :root{
+    --ink:#2b1e26;
+    --ink-soft:#5c4a54;
+    --cream:#faf6f2;
+    --cream-dark:#f1e6dd;
+    --plum:#4a2436;
+    --rose:#a5445c;
+    --line:#e8dcd2;
+    --white:#ffffff;
+    --radius:14px;
+    --shadow:0 20px 50px -25px rgba(43,30,38,0.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+  header{border-bottom:1px solid var(--line);background:var(--white)}
+  header .wrap{max-width:1120px;margin:0 auto;padding:18px 24px;display:flex;align-items:center;justify-content:space-between}
+  .logo{font-weight:800;font-size:18px;letter-spacing:.04em}
+  .logo span{color:var(--rose)}
+  .back{font-size:13.5px;font-weight:600;text-decoration:none;color:var(--ink-soft)}
+
+  main{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 20px}
+  .card{width:100%;max-width:480px;background:var(--white);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:40px 36px}
+
+  .steps{display:flex;align-items:center;gap:8px;margin-bottom:24px;font-size:12px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em}
+  .steps .step{display:flex;align-items:center;gap:8px}
+  .steps .dot{width:22px;height:22px;border-radius:50%;background:var(--rose);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px}
+  .steps .line{width:28px;height:1px;background:var(--line)}
+
+  h1{font-size:26px;margin-bottom:8px}
+  .card > p.lead{color:var(--ink-soft);font-size:15px;margin-bottom:26px}
+
+  .buyer-box{
+    background:var(--cream-dark);border-radius:12px;padding:14px 16px;margin-bottom:26px;font-size:14px;
+  }
+  .buyer-box .label{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);font-weight:700;margin-bottom:2px}
+
+  .order-summary{border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:26px}
+  .order-summary .row{display:flex;justify-content:space-between;font-size:14.5px;padding:8px 0;color:var(--ink-soft)}
+  .order-summary .row.total{border-top:1px solid var(--line);margin-top:6px;padding-top:14px;font-weight:800;font-size:16px;color:var(--ink)}
+
+  .btn{
+    width:100%;display:flex;align-items:center;justify-content:center;gap:8px;
+    background:var(--rose);color:#fff;border:none;padding:16px;border-radius:100px;
+    font-weight:700;font-size:15.5px;cursor:pointer;text-decoration:none;
+    box-shadow:0 12px 26px -10px rgba(165,68,92,0.5);
+    transition:transform .18s ease;
+  }
+  .btn:hover{transform:translateY(-2px)}
+
+  .fine-print{margin-top:16px;font-size:12px;color:var(--ink-soft);text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">PLENA<span>.</span></div>
+    <a href="signup.html" class="back">← Volver</a>
+  </div>
+</header>
+
+<main>
+  <div class="card">
+    <div class="steps">
+      <span class="step"><span class="dot">1</span> Tus datos</span>
+      <span class="line"></span>
+      <span class="step"><span class="dot">2</span> Pago</span>
+    </div>
+    <h1>Confirma y paga</h1>
+    <p class="lead">Un último paso. Al continuar irás a la página de pago seguro.</p>
+
+    <div class="buyer-box">
+      <div class="label">Reservando para</div>
+      <div id="buyer-name">—</div>
+      <div id="buyer-email" style="color:var(--ink-soft)">—</div>
+    </div>
+
+    <div class="order-summary">
+      <div class="row"><span>Conferencia PLENA · 8 de agosto</span><span>$25 USD</span></div>
+      <div class="row total"><span>Total hoy</span><span>$25 USD</span></div>
+    </div>
+
+    <a href="https://www.madelinsantana.com/_paylink/AZ2loDk9" id="pay-btn" class="btn" target="_blank" rel="noopener">Pagar de forma segura →</a>
+    <p class="fine-print">🔒 Pago procesado de forma segura. PLENA nunca ve ni almacena los datos de tu tarjeta.</p>
+  </div>
+</main>
+
+<script>
+  var params = new URLSearchParams(window.location.search);
+  var name = params.get('name') || sessionStorage.getItem('plena_name') || '';
+  var email = params.get('email') || sessionStorage.getItem('plena_email') || '';
+
+  document.getElementById('buyer-name').textContent = name || 'Sin nombre';
+  document.getElementById('buyer-email').textContent = email || 'Sin correo';
+</script>
+
+</body>
+</html>
