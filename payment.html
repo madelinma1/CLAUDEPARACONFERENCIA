@@ -95,18 +95,34 @@
       <div class="row total"><span>Total hoy</span><span>$25 USD</span></div>
     </div>
 
-    <a href="https://www.madelinsantana.com/_paylink/AZ9w96AF" id="pay-btn" class="btn" target="_blank" rel="noopener">Pagar de forma segura →</a>
+    <a href="#" id="pay-btn" class="btn" target="_blank" rel="noopener">Pagar de forma segura →</a>
     <p class="fine-print">🔒 Pago procesado de forma segura. PLENA nunca ve ni almacena los datos de tu tarjeta.</p>
   </div>
 </main>
 
 <script>
+  // Payment link. To activate the automated funnel (recovery emails stop on
+  // payment + onboarding emails start), replace this with a Stripe Payment
+  // Link (https://buy.stripe.com/...) whose webhook points at the
+  // funnel-automation backend. Any other link keeps working, but payments
+  // made through it are invisible to the automation.
+  var PAY_LINK = "https://www.madelinsantana.com/_paylink/AZ9w96AF";
+
   var params = new URLSearchParams(window.location.search);
   var name = params.get('name') || sessionStorage.getItem('plena_name') || '';
   var email = params.get('email') || sessionStorage.getItem('plena_email') || '';
 
   document.getElementById('buyer-name').textContent = name || 'Sin nombre';
   document.getElementById('buyer-email').textContent = email || 'Sin correo';
+
+  // Stripe Payment Links accept prefilled_email — it locks the checkout to
+  // the same address she signed up with, which is how the backend matches
+  // the payment to her signup and cancels the recovery emails.
+  var payUrl = PAY_LINK;
+  if (/buy\.stripe\.com/.test(PAY_LINK) && email) {
+    payUrl += (PAY_LINK.indexOf('?') === -1 ? '?' : '&') + 'prefilled_email=' + encodeURIComponent(email);
+  }
+  document.getElementById('pay-btn').href = payUrl;
 </script>
 
 </body>

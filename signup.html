@@ -94,6 +94,10 @@
       <label for="email">Correo electrónico</label>
       <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com" required autocomplete="email">
 
+      <label for="comments">¿Qué esperas de la conferencia? <span style="font-weight:400;color:var(--ink-soft)">(opcional)</span></label>
+      <textarea id="comments" name="comments" rows="3" placeholder="Cuéntanos qué te trae a PLENA, o cualquier pregunta que tengas…"
+        style="width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:15px;font-family:inherit;color:var(--ink);background:var(--cream);resize:vertical"></textarea>
+
       <div class="error" id="form-error">Por favor completa tu nombre y un correo válido.</div>
 
       <button type="submit" class="btn" id="submit-btn">Continuar al pago →</button>
@@ -107,6 +111,12 @@
   // Google Sheet via this Apps Script web app before continuing to payment.
   var FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbz_7bOJxZibUQrDDFy-j9vbnX0b-hzhT6Y2g3bvnlqYK2-oFsMiUt7jlCfjOrP6ijsa/exec";
 
+  // Base URL of the funnel-automation backend (madelinma1/CLAUDEFORCOLLEGE).
+  // Set after deploying it, e.g. "https://api.madelinsantana.com". While
+  // empty, the page works exactly as before (Google Sheet only) — but the
+  // automated day-3/day-5 recovery emails stay off.
+  var PLENA_API_URL = "";
+
   var form = document.getElementById('signup-form');
   var errorBox = document.getElementById('form-error');
   var submitBtn = document.getElementById('submit-btn');
@@ -115,6 +125,7 @@
     e.preventDefault();
     var name = document.getElementById('name').value.trim();
     var email = document.getElementById('email').value.trim();
+    var comments = document.getElementById('comments').value.trim();
 
     if(!name || !email){
       errorBox.classList.add('show');
@@ -132,17 +143,30 @@
       window.location.href = 'payment.html?' + params.toString();
     }
 
+    var pending = [];
+
     if (FORM_ENDPOINT) {
       // mode:'no-cors' + text/plain body: Apps Script web apps don't answer
       // CORS preflights, so the request must qualify as a "simple" request.
-      fetch(FORM_ENDPOINT, {
+      pending.push(fetch(FORM_ENDPOINT, {
         method: 'POST',
         mode: 'no-cors',
-        body: JSON.stringify({ name: name, email: email })
-      }).then(goToPayment).catch(goToPayment);
-    } else {
-      goToPayment();
+        body: JSON.stringify({ name: name, email: email, comments: comments })
+      }).catch(function(){}));
     }
+
+    if (PLENA_API_URL) {
+      // Registers the signup with the automation backend, which schedules
+      // the recovery emails (cancelled automatically if she completes payment).
+      pending.push(fetch(PLENA_API_URL.replace(/\/$/, '') + '/public/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, email: email, comments: comments || null })
+      }).catch(function(){}));
+    }
+
+    // Never block the visitor on tracking calls.
+    Promise.all(pending).then(goToPayment, goToPayment);
   });
 </script>
 
