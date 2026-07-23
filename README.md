@@ -4,7 +4,7 @@ Página de la Conferencia PLENA: La Mujer que Emergió — sábado 8 de agosto, 
 
 - `index.html` — página principal del evento
 - `signup.html` — formulario de reserva (nombre, correo y comentarios opcionales)
-- `payment.html` — confirmación y pago ($25 USD)
+- `payment.html` — confirmación y pago ($20 USD)
 
 ## Funnel de emails automatizado
 
